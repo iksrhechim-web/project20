@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cable Connection Puzzle | Northstar Workspace</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/cables.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #f1f5f9;
+      color: #0f172a;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .page {
+      width: min(100% - 32px, 1000px);
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      background: white;
+      color: #334155;
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 600;
+    }
+
+    .back-link:hover {
+      background: #f8fafc;
+    }
+
+    .game-card {
+      padding: clamp(20px, 5vw, 36px);
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      background: white;
+      box-shadow: 0 12px 35px rgba(15, 23, 42, .06);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: #64748b;
+      font-size: .75rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      letter-spacing: -.04em;
+    }
+
+    .subtitle {
+      max-width: 620px;
+      margin: 12px 0 22px;
+      color: #64748b;
+      line-height: 1.65;
+    }
+
+    .game-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    #cables-level {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: #475569;
+      font-size: .85rem;
+      font-weight: 600;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .red { background: #ef4444; }
+    .blue { background: #3b82f6; }
+    .green { background: #22c55e; }
+
+    .game-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(220px, .8fr);
+      align-items: start;
+      gap: 28px;
+    }
+
+    .board-panel {
+      min-width: 0;
+    }
+
+    #cables-status {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 58px;
+      margin: 0 0 12px;
+      padding: 12px 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background: #f8fafc;
+      color: #334155;
+      font-size: .9rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .cables-board {
+      width: min(100%, 480px);
+      margin: 0 auto;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .controls button {
+      flex: 1;
+      min-height: 44px;
+      padding: 11px 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 11px;
+      background: white;
+      color: #0f172a;
+      font-size: .9rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .controls button.primary {
+      border-color: #2563eb;
+      background: #2563eb;
+      color: white;
+    }
+
+    .controls button:hover:not(:disabled) {
+      filter: brightness(.96);
+    }
+
+    .controls button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .instructions {
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      background: #f8fafc;
+    }
+
+    .instructions h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+    }
+
+    .instructions ol {
+      margin: 0;
+      padding-left: 20px;
+      color: #475569;
+      font-size: .9rem;
+      line-height: 1.8;
+    }
+
+    .tip {
+      margin: 18px 0 0;
+      padding: 12px;
+      border-radius: 10px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: .85rem;
+      line-height: 1.6;
+    }
+
+    .footer {
+      margin-top: 22px;
+      color: #94a3b8;
+      font-size: .8rem;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .game-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .instructions {
+        order: 2;
+      }
+
+      .game-card {
+        padding: 20px 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <header class="topbar">
+      <div class="brand">Northstar Workspace</div>
+
+      <a class="back-link" href="home.html">
+        <span aria-hidden="true">←</span>
+        Back to dashboard
+      </a>
+    </header>
+
+    <section class="game-card">
+
+      <p class="eyebrow">Mini game · Logic and focus</p>
+
+      <h1>Cable Connection</h1>
+
+      <p class="subtitle">
+        Connect each colored endpoint to its matching endpoint.
+        Plan your route carefully: cables cannot overlap, and you can
+        only move horizontally or vertically.
+      </p>
+
+      <div class="game-info">
+        <h2 id="cables-level">Level 1</h2>
+
+        <div class="legend" aria-label="Cable colors">
+          <span class="legend-item">
+            <span class="legend-dot red"></span> Red
+          </span>
+
+          <span class="legend-item">
+            <span class="legend-dot blue"></span> Blue
+          </span>
+
+          <span class="legend-item">
+            <span class="legend-dot green"></span> Green
+          </span>
+        </div>
+      </div>
+
+      <div class="game-layout">
+
+        <section class="board-panel" aria-label="Cable puzzle game">
+
+          <p
+            id="cables-status"
+            role="status"
+            aria-live="polite"
+          >
+            Loading puzzle…
+          </p>
+
+          <div
+            id="cables-board"
+            class="cables-board"
+            aria-label="Six by six puzzle grid"
+          ></div>
+
+          <div class="controls">
+            <button id="cables-reset" type="button">
+              ↻ Reset level
+            </button>
+
+            <button
+              id="cables-next"
+              class="primary"
+              type="button"
+              disabled
+            >
+              Next level →
+            </button>
+          </div>
+
+        </section>
+
+        <aside class="instructions">
+          <h2>How to play</h2>
+
+          <ol>
+            <li>Select either endpoint of a colored cable.</li>
+            <li>Click an adjacent cell to extend the cable.</li>
+            <li>Continue until you reach the matching endpoint.</li>
+            <li>Connect all three colors to complete the level.</li>
+          </ol>
+
+          <p class="tip">
+            <strong>Tip:</strong> If you make a mistake, click an earlier
+            cell in your active path to undo the cells after it. Use
+            Reset level to start over.
+          </p>
+        </aside>
+
+      </div>
+    </section>
+
+    <footer class="footer">
+      Northstar Workspace · Take a break and challenge your mind.
+    </footer>
+
+  </main>
+
+  <script src="js/cables.js"></script>
+</body>
+</html>

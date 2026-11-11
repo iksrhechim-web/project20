@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Northstar | Login</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page">
+  <main class="login-shell">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">N</span> myTools
+    </a>
+
+    <section class="login-card">
+      <p class="eyebrow">YOUR PERSONAL WORKSPACE</p>
+      <h1>Welcome back.</h1>
+      <p class="muted">Sign in to access your productivity tools.</p>
+
+      <form id="loginForm">
+        <label for="username">Username</label>
+        <input id="username" placeholder="Enter your username">
+
+        <div class="password-label">
+          <label for="password">Password</label>
+          <button type="button" class="text-button" id="togglePassword">Show</button>
+        </div>
+        <input id="password" type="password" placeholder="Enter any password">
+
+        <label class="check-row">
+          <input type="checkbox" id="remember">
+          Remember me
+        </label>
+
+        <button class="button button-primary button-wide" type="submit">
+          Log in →
+        </button>
+      </form>
+
+      <p class="login-note">Demo workspace · No account required</p>
+    </section>
+
+    <footer class="login-footer">
+      © <span data-year></span> Northstar Workspace
+    </footer>
+  </main>
+  <script src="js/common.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>
